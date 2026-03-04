@@ -7,21 +7,24 @@ A full-stack platform where multiple AI agents collaborate to research a topic a
 ```
 ┌─────────────────────────────────────────────────────┐
 │  Frontend (Next.js / React)                         │
-│  ┌──────────┐  ┌────────────────┐  ┌────────────┐  │
-│  │ TaskForm │ -> │ PipelineView   │ -> │ ReportView │  │
-│  └──────────┘  │ (SSE real-time)│  └────────────┘  │
-│                └────────────────┘                    │
-└───────────────────────┬─────────────────────────────┘
-                        │ HTTP + SSE
-┌───────────────────────▼─────────────────────────────┐
-│  Backend (Python / FastAPI)                          │
+│                                                     │
+│  ┌──────────┐   ┌───────────────┐   ┌────────────┐  │
+│  │ TaskForm │ → │ PipelineView  │ → │ ReportView │  │
+│  └──────────┘   │(SSE real-time)│   └────────────┘  │
+│                 └───────────────┘                   │
+│                                                     │
+└───────────────────────────┬─────────────────────────┘
+                            │ HTTP + SSE
+┌───────────────────────────▼─────────────────────────┐
+│  Backend (Python / FastAPI)                         │
 │  ┌─────────────────────────────────────────────┐    │
-│  │              Orchestrator                    │    │
-│  │  Planner -> Researcher -> Writer -> Reviewer   │    │
-│  │                          ↑         │         │    │
-│  │                          └─────────┘         │    │
-│  │                      (feedback loop)         │    │
+│  │               Orchestrator                  │    │
+│  │ Planner → Researcher → Writer → Reviewer    │    │
+│  │                           ▲         │       │    │
+│  │                           └─────────┘       │    │
+│  │                        (feedback loop)      │    │
 │  └─────────────────────────────────────────────┘    │
+│                                                     │
 │  POST /api/tasks  │  GET /api/tasks/{id}            │
 │  GET  /api/tasks/{id}/stream  (SSE)                 │
 └─────────────────────────────────────────────────────┘
@@ -76,7 +79,7 @@ Open `http://localhost:3001` in your browser.
 ```
 multi-agent-orchestrator/
 ├── backend/
-│   ├── main.py           # FastAPI app with API endpoints
+│   ├── main.py            # FastAPI app with API endpoints
 │   ├── models.py          # Pydantic models and TaskStatus enum
 │   ├── agents.py          # BaseAgent ABC + 4 agent implementations
 │   ├── orchestrator.py    # Pipeline coordinator with retry logic
